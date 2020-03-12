@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SpaceLaunchNow</string>
+    <string name="content_main">MainFragment</string>
+</resources>
