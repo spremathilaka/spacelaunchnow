@@ -1,6 +1,8 @@
 package com.zotiko.spacelaunchnow.data.repository
 
+import com.zotiko.spacelaunchnow.model.LaunchEvent
+
 interface SpaceLaunchRepository {
 
-    fun getUpComingLaunchList()
+    fun getUpComingLaunchList(): List<LaunchEvent>
 }
