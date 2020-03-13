@@ -1,8 +1,9 @@
 package com.zotiko.spacelaunchnow.data.repository
 
-import com.zotiko.spacelaunchnow.model.LaunchEvent
+import com.zotiko.spacelaunchnow.model.UpComingLaunches
+import io.reactivex.Single
 
 interface SpaceLaunchRepository {
 
-    fun getUpComingLaunchList(): List<LaunchEvent>
+    fun getUpComingLaunchList(): Single<UpComingLaunches>
 }
