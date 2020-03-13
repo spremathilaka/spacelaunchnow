@@ -23,6 +23,10 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -34,9 +38,28 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
-    testImplementation 'junit:junit:4.12'
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //okHTTP
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okio:okio:$okio_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_loggin_version"
+
+    //gson
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    //Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    testImplementation 'junit:junit:4.13'
     testImplementation "org.mockito:mockito-inline:$mockito_version"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrest_version"
+
+    // MOCK WEB SERVER
+    testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
