@@ -1,8 +1,8 @@
-package com.zotiko.spacelaunchnow
+package com.zotiko.spacelaunchnow.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.zotiko.spacelaunchnow.ui.main.MainFragment
+import androidx.appcompat.app.AppCompatActivity
+import com.zotiko.spacelaunchnow.R
 
 class MainActivity : AppCompatActivity() {
 

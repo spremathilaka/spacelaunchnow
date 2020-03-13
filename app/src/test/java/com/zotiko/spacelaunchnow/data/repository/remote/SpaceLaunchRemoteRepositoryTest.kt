@@ -1,45 +1,40 @@
 package com.zotiko.spacelaunchnow.data.repository.remote
 
+import com.google.gson.GsonBuilder
+import com.zotiko.spacelaunchnow.base.BaseTest
 import com.zotiko.spacelaunchnow.data.network.ApiService
-import com.zotiko.spacelaunchnow.model.LaunchEvent
-import com.zotiko.spacelaunchnow.utils.TestUtil
+import okhttp3.OkHttpClient
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.hasSize
-import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.mockito.Mockito.`when` as whenEver
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.net.HttpURLConnection
 
-class SpaceLaunchRemoteRepositoryTest {
+class SpaceLaunchRemoteRepositoryTest : BaseTest() {
 
-    @Mock
-    private lateinit var fakeApi: ApiService
+    private val apiClient = OkHttpClient().newBuilder().build()
+    private val mockApi: ApiService by lazy {
+        Retrofit.Builder()
+            .client(apiClient)
+            .baseUrl(mockServer.url("/").toString())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .build()
+            .create(ApiService::class.java)
+    }
 
     private lateinit var repository: SpaceLaunchRemoteRepository
 
-    @Before
-    fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        repository = SpaceLaunchRemoteRepository(
-            apiService = fakeApi
-        )
-    }
-
     @Test
     fun `should return list of upcoming launches when api success`() {
-        val fakeLaunchList = getDummyLaunchEventsList()
 
-        whenEver<Any>(fakeApi.getUpcomingLaunches())
-            .thenReturn(fakeLaunchList)
+        repository = SpaceLaunchRemoteRepository(apiService = mockApi)
+
+        this.mockHttpResponse("json/getLaunchList_whenSuccess.json", HttpURLConnection.HTTP_OK)
 
         val upComingLaunchesList = repository.getUpComingLaunchList()
-        assertThat(upComingLaunchesList, hasSize(1))
+        assertThat(upComingLaunchesList, hasSize(3))
     }
 
-    private fun getDummyLaunchEventsList(): List<LaunchEvent> {
-        val dummyList = mutableListOf<LaunchEvent>()
-        dummyList.add(TestUtil.getDummyLaunchEvent())
-        return dummyList
-    }
+    override fun isMockServerEnabled(): Boolean = true
 }
