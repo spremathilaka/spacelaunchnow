@@ -1,24 +1,17 @@
 package com.zotiko.spacelaunchnow.ui.main
 
-import com.zotiko.spacelaunchnow.data.network.ApiService
-import com.zotiko.spacelaunchnow.data.network.ApiServiceImpl
-import com.zotiko.spacelaunchnow.data.repository.SpaceLaunchRepository
-import com.zotiko.spacelaunchnow.data.repository.remote.SpaceLaunchRemoteRepository
+import com.zotiko.spacelaunchnow.di.modules.OBSERVER_ON
 import com.zotiko.spacelaunchnow.domain.base.upcominglaunches.GetUpComingLaunchesUC
 import com.zotiko.spacelaunchnow.ui.base.BaseViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import javax.inject.Named
 
-class MainViewModel : BaseViewModel() {
-
-    private val apiService: ApiService = ApiServiceImpl.spaceLaunchApi
-    private val repository: SpaceLaunchRepository = SpaceLaunchRemoteRepository(apiService)
-    private val getUpComingLaunchUseCase: GetUpComingLaunchesUC = GetUpComingLaunchesUC(
-        repository,
-        Schedulers.io()
-    )
+class MainViewModel(
+    private val getUpComingLaunchUseCase: GetUpComingLaunchesUC,
+    @Named(OBSERVER_ON) private val observerOn: Scheduler
+) : BaseViewModel() {
 
     init {
         getLaunchEvents()
@@ -27,7 +20,7 @@ class MainViewModel : BaseViewModel() {
     private fun getLaunchEvents() {
         addDisposable(
             getUpComingLaunchUseCase.run(GetUpComingLaunchesUC.RequestValues())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(observerOn)
                 .subscribeWith(
                     object : DisposableSingleObserver<GetUpComingLaunchesUC.ResponseValue>() {
                         override fun onSuccess(apiResponse: GetUpComingLaunchesUC.ResponseValue) {
