@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.zotiko.spacelaunchnow.databinding.MainFragmentBinding
+import com.zotiko.spacelaunchnow.databinding.FragmentMainBinding
 import com.zotiko.spacelaunchnow.di.modules.ViewModelFactory
 import com.zotiko.spacelaunchnow.dto.LaunchEventDTO
 import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchContract
@@ -19,7 +19,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
 
     private lateinit var viewModel: UpComingLaunchesViewModel
 
-    private lateinit var fragmentBinding: MainFragmentBinding
+    private lateinit var fragmentBinding: FragmentMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentBinding = MainFragmentBinding.inflate(inflater, container, false)
+        fragmentBinding = FragmentMainBinding.inflate(inflater, container, false)
         return fragmentBinding.root
     }
 
