@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.zotiko.spacelaunchnow.ui.main.MainFragment"
+        android:name="com.zotiko.spacelaunchnow.ui.upcominglaunches.list.LaunchEventListFragment"
         android:label="MainFragment"
         tools:layout="@layout/main_fragment">
 
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.zotiko.spacelaunchnow.ui.main.detail.DetailFragment"
+        android:name="com.zotiko.spacelaunchnow.ui.upcominglaunches.detail.DetailFragment"
         android:label="DetailFragment"
         tools:layout="@layout/fragment_detail">
 

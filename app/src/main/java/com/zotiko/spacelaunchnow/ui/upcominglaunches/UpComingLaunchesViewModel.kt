@@ -1,9 +1,9 @@
-package com.zotiko.spacelaunchnow.ui.main
+package com.zotiko.spacelaunchnow.ui.upcominglaunches
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zotiko.spacelaunchnow.di.modules.OBSERVER_ON
-import com.zotiko.spacelaunchnow.domain.base.upcominglaunches.GetUpComingLaunchesUC
+import com.zotiko.spacelaunchnow.domain.upcominglaunches.GetUpComingLaunchesUC
 import com.zotiko.spacelaunchnow.ui.base.BaseViewModel
 import com.zotiko.spacelaunchnow.ui.data.PageErrorState
 import io.reactivex.Scheduler
@@ -13,7 +13,7 @@ import timber.log.Timber
 import java.io.IOException
 import javax.inject.Named
 
-class MainViewModel(
+class UpComingLaunchesViewModel(
     private val getUpComingLaunchUseCase: GetUpComingLaunchesUC,
     @Named(OBSERVER_ON) private val observerOn: Scheduler
 ) : BaseViewModel() {

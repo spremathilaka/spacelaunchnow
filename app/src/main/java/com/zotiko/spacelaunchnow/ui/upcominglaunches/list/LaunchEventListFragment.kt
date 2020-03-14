@@ -1,4 +1,4 @@
-package com.zotiko.spacelaunchnow.ui.main
+package com.zotiko.spacelaunchnow.ui.upcominglaunches.list
 
 import android.content.Context
 import android.os.Bundle
@@ -13,6 +13,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.zotiko.spacelaunchnow.databinding.MainFragmentBinding
 import com.zotiko.spacelaunchnow.di.modules.ViewModelFactory
 import com.zotiko.spacelaunchnow.dto.LaunchEventDTO
+import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchContract
+import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchesViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -21,7 +23,7 @@ import kotlinx.android.synthetic.main.main_fragment.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainFragment : Fragment(), HasAndroidInjector {
+class LaunchEventListFragment : Fragment(), HasAndroidInjector {
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -31,13 +33,13 @@ class MainFragment : Fragment(), HasAndroidInjector {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: UpComingLaunchesViewModel
 
     private lateinit var fragmentBinding: MainFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, vmFactory).get(UpComingLaunchesViewModel::class.java)
         viewModel.fetchLaunchEvents()
     }
 
@@ -63,7 +65,9 @@ class MainFragment : Fragment(), HasAndroidInjector {
         })
         fragmentBinding.navigationButton.setOnClickListener {
             val action =
-                MainFragmentDirections.actionMainFragmentToDetailFragment(launchEvents[0])
+                LaunchEventListFragmentDirections.actionMainFragmentToDetailFragment(
+                    launchEvents[0]
+                )
             findNavController().navigate(action)
         }
     }

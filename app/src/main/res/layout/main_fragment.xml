@@ -7,18 +7,18 @@
 
         <import type="android.view.View" />
 
-        <import type="com.zotiko.spacelaunchnow.ui.main.UpComingLaunchContract" />
+        <import type="com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchContract" />
 
         <variable
             name="uiViewModel"
-            type="com.zotiko.spacelaunchnow.ui.main.MainViewModel" />
+            type="com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.MainFragment">
+        tools:context=".ui.upcominglaunches.list.LaunchEventListFragment">
 
         <TextView
             android:id="@+id/apiData"

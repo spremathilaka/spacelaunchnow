@@ -1,4 +1,4 @@
-package com.zotiko.spacelaunchnow.ui.main
+package com.zotiko.spacelaunchnow.ui.upcominglaunches
 
 import com.zotiko.spacelaunchnow.dto.LaunchEventDTO
 import com.zotiko.spacelaunchnow.ui.data.PageErrorState
