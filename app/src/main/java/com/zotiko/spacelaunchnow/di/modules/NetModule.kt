@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder
 import com.zotiko.spacelaunchnow.data.network.ApiConstants
 import com.zotiko.spacelaunchnow.data.network.ApiService
 import com.zotiko.spacelaunchnow.data.repository.SpaceLaunchRepository
-import com.zotiko.spacelaunchnow.domain.base.upcominglaunches.GetUpComingLaunchesUC
+import com.zotiko.spacelaunchnow.domain.upcominglaunches.GetUpComingLaunchesUC
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable

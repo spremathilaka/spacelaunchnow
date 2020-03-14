@@ -1,4 +1,4 @@
-package com.zotiko.spacelaunchnow.domain.base.upcominglaunches
+package com.zotiko.spacelaunchnow.domain.upcominglaunches
 
 import com.zotiko.spacelaunchnow.data.repository.SpaceLaunchRepository
 import com.zotiko.spacelaunchnow.model.UpComingLaunches

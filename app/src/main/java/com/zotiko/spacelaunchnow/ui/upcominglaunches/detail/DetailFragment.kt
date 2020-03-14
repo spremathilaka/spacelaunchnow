@@ -1,4 +1,4 @@
-package com.zotiko.spacelaunchnow.ui.main.detail
+package com.zotiko.spacelaunchnow.ui.upcominglaunches.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,8 +1,8 @@
-package com.zotiko.spacelaunchnow.ui.main
+package com.zotiko.spacelaunchnow.ui.upcominglaunches
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.zotiko.spacelaunchnow.domain.base.upcominglaunches.GetUpComingLaunchesUC
+import com.zotiko.spacelaunchnow.domain.upcominglaunches.GetUpComingLaunchesUC
 import com.zotiko.spacelaunchnow.model.UpComingLaunches
 import com.zotiko.spacelaunchnow.ui.data.PageErrorState
 import com.zotiko.spacelaunchnow.utils.TestUtils
@@ -10,11 +10,11 @@ import com.zotiko.spacelaunchnow.utils.any
 import com.zotiko.spacelaunchnow.utils.lambdaMock
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertNull
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,7 +28,7 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.io.IOException
 
-class MainViewModelTest {
+class UpComingLaunchesViewModelTest {
 
     @Rule
     @JvmField
@@ -37,7 +37,7 @@ class MainViewModelTest {
     @Mock
     lateinit var fetchGetUpComingLaunchesUC: GetUpComingLaunchesUC
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: UpComingLaunchesViewModel
 
     private val viewStateObserver: Observer<UpComingLaunchContract.ViewState> = lambdaMock()
 
@@ -50,7 +50,10 @@ class MainViewModelTest {
     }
 
     private fun initViewModel() {
-        viewModel = MainViewModel(fetchGetUpComingLaunchesUC, Schedulers.trampoline())
+        viewModel = UpComingLaunchesViewModel(
+            fetchGetUpComingLaunchesUC,
+            Schedulers.trampoline()
+        )
         viewModel.viewState.observeForever(viewStateObserver)
     }
 
@@ -101,6 +104,10 @@ class MainViewModelTest {
             "json/getLaunchList_whenSuccess.json",
             UpComingLaunches::class.java
         )
-        return Single.just(GetUpComingLaunchesUC.ResponseValue(data!!.launchEvents))
+        val results = data!!.launchEvents.map { launchEvent ->
+            launchEvent.toDTO()
+        }.toList()
+
+        return Single.just(GetUpComingLaunchesUC.ResponseValue(results))
     }
 }

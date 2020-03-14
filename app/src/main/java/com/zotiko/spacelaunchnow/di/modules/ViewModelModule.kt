@@ -1,8 +1,8 @@
 package com.zotiko.spacelaunchnow.di.modules
 
 import androidx.lifecycle.ViewModel
-import com.zotiko.spacelaunchnow.domain.base.upcominglaunches.GetUpComingLaunchesUC
-import com.zotiko.spacelaunchnow.ui.main.MainViewModel
+import com.zotiko.spacelaunchnow.domain.upcominglaunches.GetUpComingLaunchesUC
+import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchesViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
@@ -23,12 +23,12 @@ class ViewModelModule {
 
     @Provides
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
+    @ViewModelKey(UpComingLaunchesViewModel::class)
     fun provideMainViewModel(
         getUpComingLaunchUseCase: GetUpComingLaunchesUC,
         @Named(OBSERVER_ON) observerOn: Scheduler
     ): ViewModel {
-        return MainViewModel(
+        return UpComingLaunchesViewModel(
             getUpComingLaunchUseCase, observerOn
         )
     }
