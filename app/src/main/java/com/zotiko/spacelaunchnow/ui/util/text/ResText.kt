@@ -1,4 +1,4 @@
-package com.zotiko.spacelaunchnow.ui.util
+package com.zotiko.spacelaunchnow.ui.util.text
 
 import android.content.Context
 import androidx.annotation.StringRes
