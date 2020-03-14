@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.zotiko.spacelaunchnow.databinding.MainFragmentBinding
 import com.zotiko.spacelaunchnow.di.modules.ViewModelFactory
+import com.zotiko.spacelaunchnow.dto.LaunchEventDTO
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.main_fragment.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -28,10 +31,6 @@ class MainFragment : Fragment(), HasAndroidInjector {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private lateinit var viewModel: MainViewModel
 
     private lateinit var fragmentBinding: MainFragmentBinding
@@ -39,6 +38,7 @@ class MainFragment : Fragment(), HasAndroidInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
+        viewModel.fetchLaunchEvents()
     }
 
     override fun onCreateView(
@@ -49,17 +49,23 @@ class MainFragment : Fragment(), HasAndroidInjector {
         return fragmentBinding.root
     }
 
+    private var launchEvents = listOf<LaunchEventDTO>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragmentBinding.apply {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = viewModel
+            uiViewModel = viewModel
         }
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             Timber.d("Launch Event : $it")
+            launchEvents = it.activityData
             it?.let { render(it) }
         })
-        viewModel.fetchLaunchEvents()
+        fragmentBinding.navigationButton.setOnClickListener {
+            val action =
+                MainFragmentDirections.actionMainFragmentToDetailFragment(launchEvents[0])
+            findNavController().navigate(action)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -86,6 +92,13 @@ class MainFragment : Fragment(), HasAndroidInjector {
         if (viewState.errorState != null) {
             showError(viewState.errorState.message.getText(context!!).toString())
         }
+
+        if (viewState.activityData.isNotEmpty()) {
+            apiData.apply {
+                text = viewState.activityData.toString()
+                visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun showError(errorMessage: String) {
@@ -99,5 +112,6 @@ class MainFragment : Fragment(), HasAndroidInjector {
     }
 
     interface OnFragmentInteractionListener
+
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
 }

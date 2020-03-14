@@ -10,7 +10,7 @@
         <import type="com.zotiko.spacelaunchnow.ui.main.UpComingLaunchContract" />
 
         <variable
-            name="viewModel"
+            name="uiViewModel"
             type="com.zotiko.spacelaunchnow.ui.main.MainViewModel" />
     </data>
 
@@ -21,7 +21,7 @@
         tools:context=".ui.main.MainFragment">
 
         <TextView
-            android:id="@+id/message"
+            android:id="@+id/apiData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/content_main"
@@ -45,6 +45,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/navigationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok_button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pageLoadingIndicator" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
