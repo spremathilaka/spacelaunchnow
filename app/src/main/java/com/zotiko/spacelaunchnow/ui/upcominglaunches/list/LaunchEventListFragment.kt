@@ -10,12 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.zotiko.spacelaunchnow.databinding.FragmentMainBinding
 import com.zotiko.spacelaunchnow.di.modules.ViewModelFactory
-import com.zotiko.spacelaunchnow.dto.LaunchEventDTO
-import com.zotiko.spacelaunchnow.ui.base.RecyclerAdapter
 import com.zotiko.spacelaunchnow.ui.extension.startWithFade
 import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchContract
 import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchesViewModel
@@ -42,9 +39,7 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
 
     private lateinit var fragmentBinding: FragmentMainBinding
 
-    private var eventListItems: ArrayList<LaunchEventDTO> = ArrayList()
-
-    private lateinit var dataListAdapter: RecyclerAdapter<LaunchEventDTO, RecyclerView.ViewHolder>
+    private lateinit var dataListAdapterLaunch: LaunchEventListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,20 +52,17 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
         savedInstanceState: Bundle?
     ): View {
         fragmentBinding = FragmentMainBinding.inflate(inflater, container, false)
-        dataListAdapter =
-            LaunchEventListAdapter(
-                eventListItems
-            ) {
-                val action =
-                    LaunchEventListFragmentDirections.actionMainFragmentToDetailFragment(it)
-                findNavController().navigate(action)
-            }
+        dataListAdapterLaunch = LaunchEventListAdapter {
+            val action =
+                LaunchEventListFragmentDirections.actionMainFragmentToDetailFragment(it)
+            findNavController().navigate(action)
+        }
         setUpRecyclerView()
         return fragmentBinding.root
     }
 
     private fun setUpRecyclerView() {
-        fragmentBinding.launchEventRecyclerView.adapter = dataListAdapter
+        fragmentBinding.launchEventRecyclerView.adapter = dataListAdapterLaunch
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -96,6 +88,11 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
         super.onAttach(context)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentBinding.launchEventRecyclerView.adapter = null
+    }
+
     override fun onDetach() {
         super.onDetach()
         listener = null
@@ -112,8 +109,7 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
         }
 
         if (viewState.activityData.isNotEmpty()) {
-            eventListItems.addAll(viewState.activityData)
-            dataListAdapter.replaceData(eventListItems)
+            dataListAdapterLaunch.submitList(viewState.activityData)
         }
     }
 
