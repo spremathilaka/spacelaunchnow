@@ -24,6 +24,7 @@ const val BASE_URL = "base_url"
 private const val READ_TIMEOUT = 30.toLong()
 private const val CONNECT_TIMEOUT = 30.toLong()
 private const val WRITE_TIMEOUT = 30.toLong()
+private const val SERVER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
 @Module
 class NetModule {
@@ -32,6 +33,7 @@ class NetModule {
     @Singleton
     fun provideGson(): Gson {
         val gsonBuilder = GsonBuilder()
+        gsonBuilder.setDateFormat(SERVER_DATE_TIME_FORMAT)
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         return gsonBuilder.create()
     }

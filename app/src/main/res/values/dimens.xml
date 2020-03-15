@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="event_launch_list_item_height">120dp</dimen>
+    <dimen name="detail_page_rock_image_width">400dp</dimen>
+    <dimen name="detail_page_rock_image_height">250dp</dimen>
+</resources>

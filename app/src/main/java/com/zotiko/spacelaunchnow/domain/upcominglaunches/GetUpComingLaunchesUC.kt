@@ -13,10 +13,16 @@ class GetUpComingLaunchesUC(
     UseCase<GetUpComingLaunchesUC.RequestValues, GetUpComingLaunchesUC.ResponseValue>(
         backgroundScheduler
     ) {
+
+    private val favouriteLaunchPadLocations = listOf("RUS", "CHN", "UNK")
+
     override fun executeUseCase(requestValues: RequestValues): Single<ResponseValue> {
         return repository.getUpComingLaunchList().map {
             val results = it.launchEvents.map { launchEvent ->
-                launchEvent.toDTO()
+                launchEvent.toDTO().apply {
+                    isFavourite =
+                        favouriteLaunchPadLocations.contains(launchEvent.launchPad.location.country_code)
+                }
             }.toList()
             ResponseValue(results)
         }
