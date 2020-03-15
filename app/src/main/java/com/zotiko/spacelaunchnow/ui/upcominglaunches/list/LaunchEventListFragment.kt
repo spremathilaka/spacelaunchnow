@@ -105,16 +105,22 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
             false -> fragmentBinding.pageLoadingIndicator.visibility = View.GONE
         }
         if (viewState.errorState != null) {
-            showError(viewState.errorState.message.getText(context!!).toString())
+            showError(viewState.errorState.message.getText(requireContext()).toString())
+            showListView(false)
         }
 
         if (viewState.activityData.isNotEmpty()) {
+            showListView(true)
             dataListAdapterLaunch.submitList(viewState.activityData)
         }
     }
 
     private fun showError(errorMessage: String) {
-        Snackbar.make(fragmentBinding.root, errorMessage, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(fragmentBinding.root, errorMessage, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showListView(show: Boolean) {
+        fragmentBinding.launchEventRecyclerView.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     interface OnFragmentInteractionListener
