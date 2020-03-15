@@ -14,8 +14,14 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner "com.zotiko.spacelaunchnow.util.UIMockRunner"
+
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     buildTypes {
@@ -48,8 +54,25 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
+    sourceSets {
+        androidTest {
+            java.srcDirs += "src/shared-test/java"
+        }
+        test {
+            java.srcDirs += "src/shared-test/java"
+        }
+        main {
+            java {
+                srcDirs 'src/main/java', 'src/main/java/j', 'src/shared-test/java/'
+            }
+            resources {
+                srcDirs 'src/main/resources', 'src/shared-test/resources/'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -117,14 +140,25 @@ dependencies {
 
     // Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$arch_version"
-
-    // MOCK WEB SERVER
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver"
+
 
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
-
+    androidTestImplementation "androidx.test:runner:$test_runner_version"
+    androidTestImplementation "androidx.test:rules:$test_rules_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver"
+
+    implementation "com.google.dagger:dagger:$dagger2_version"
+
+    androidTestImplementation "com.google.dagger:dagger-android:$dagger2_version"
+    androidTestImplementation "com.google.dagger:dagger-android-support:$dagger2_version"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger2_version"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor: $dagger2_version"
+
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
 
 }

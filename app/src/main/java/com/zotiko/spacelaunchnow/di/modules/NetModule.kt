@@ -3,7 +3,6 @@ package com.zotiko.spacelaunchnow.di.modules
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.zotiko.spacelaunchnow.data.network.ApiConstants
 import com.zotiko.spacelaunchnow.data.network.ApiService
 import com.zotiko.spacelaunchnow.data.repository.SpaceLaunchRepository
 import com.zotiko.spacelaunchnow.domain.upcominglaunches.GetUpComingLaunchesUC
@@ -18,8 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
-
-const val BASE_URL = "base_url"
 
 private const val READ_TIMEOUT = 30.toLong()
 private const val CONNECT_TIMEOUT = 30.toLong()
@@ -63,13 +60,6 @@ class NetModule {
     @Reusable
     internal fun providePostApi(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    @Named(BASE_URL)
-    fun provideBaseUrl(): String {
-        return ApiConstants.API_BASE_URL
     }
 }
 
