@@ -5,6 +5,7 @@ import com.zotiko.spacelaunchnow.SpaceLaunchApplication
 import com.zotiko.spacelaunchnow.di.modules.NetModule
 import com.zotiko.spacelaunchnow.di.modules.RepositoryModule
 import com.zotiko.spacelaunchnow.di.modules.RxJavaModule
+import com.zotiko.spacelaunchnow.di.modules.UrlModule
 import com.zotiko.spacelaunchnow.di.modules.UseCaseModule
 import com.zotiko.spacelaunchnow.di.modules.ViewModelModule
 import com.zotiko.spacelaunchnow.ui.di.ActivityBuilderModule
@@ -20,6 +21,7 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         AndroidSupportInjectionModule::class,
+        UrlModule::class,
         NetModule::class,
         RepositoryModule::class,
         ViewModelModule::class,
@@ -28,7 +30,7 @@ import javax.inject.Singleton
         ActivityBuilderModule::class]
 )
 //NOTE add this "AndroidInjector<SpaceLaunchApplication>" to fix
-// error kotlin.UninitializedPropertyAccessException: lateinit property
+// error kotlin.UninitializedPropertyAccessException: late-init property
 // dispatchingAndroidInjector has not been initialized
 interface AppComponent : AndroidInjector<SpaceLaunchApplication> {
 

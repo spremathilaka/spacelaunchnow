@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,16 +10,144 @@
             type="com.zotiko.spacelaunchnow.dto.LaunchEventDTO" />
     </data>
 
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.upcominglaunches.detail.DetailFragment">
+        android:fillViewport="true">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{uiData.name}" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/space_loop"
+            tools:context="com.zotiko.spacelaunchnow.ui.upcominglaunches.detail.DetailFragment">
 
-    </FrameLayout>
 
+            <ImageView
+                android:id="@+id/imv_rocket"
+                android:layout_width="@dimen/detail_page_rock_image_width"
+                android:layout_height="@dimen/detail_page_rock_image_height"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="29dp"
+                android:alpha=".86"
+                android:contentDescription="@string/content_desc_image"
+                app:imageSrc="@{uiData.imageUrl}"
+                app:layout_constraintBottom_toTopOf="@+id/lbl_rocket_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/im_rocket_one" />
+
+            <TextView
+                android:id="@+id/lbl_rocket_name"
+                style="@style/Text.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="70dp"
+                android:layout_marginEnd="70dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{uiData.rocket.configuration.name}"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@+id/lbl_launch_pad_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imv_rocket"
+                tools:text="@sample/launch_events.json/results/rocket/configuration/name" />
+
+            <TextView
+                android:id="@+id/lbl_launch_pad_location"
+                style="@style/Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="70dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="14dp"
+                android:text="@{uiData.launchPad.location.name}"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@+id/lbl_launch_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_rocket_name"
+                tools:text="@sample/launch_events.json/results/pad/location/name" />
+
+            <TextView
+                android:id="@+id/lbl_launch_status"
+                style="@style/Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="67dp"
+                android:layout_marginEnd="67dp"
+                android:layout_marginBottom="13dp"
+                android:text="@{uiData.status.getDisplayStatus()}"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@+id/mission_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_launch_date"
+                tools:text="@sample/launch_events.json/results/status/name" />
+
+            <TextView
+                android:id="@+id/lbl_launch_date"
+                style="@style/Text.Date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="70dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="14dp"
+                android:text="@{uiData.windowStart}"
+                android:textAlignment="center"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@+id/lbl_launch_status"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_launch_pad_location"
+                tools:text="Sun, March 15,2020, 1:22 PM UTC" />
+
+            <TextView
+                android:id="@+id/mission_title"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="17dp"
+                android:text="@string/mission_details"
+                android:textColor="@color/RED"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toTopOf="@+id/lbl_mission_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_launch_status" />
+
+            <TextView
+                android:id="@+id/lbl_mission_description"
+                style="@style/Text"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="58dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@{uiData.mission.description}"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mission_title"
+                tools:text="@sample/launch_events.json/results/mission/description" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </layout>
