@@ -1,6 +1,7 @@
 package com.zotiko.spacelaunchnow.ui.upcominglaunches.list
 
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.zotiko.spacelaunchnow.databinding.FragmentMainBinding
 import com.zotiko.spacelaunchnow.di.modules.ViewModelFactory
 import com.zotiko.spacelaunchnow.dto.LaunchEventDTO
+import com.zotiko.spacelaunchnow.ui.base.RecyclerAdapter
+import com.zotiko.spacelaunchnow.ui.extension.startWithFade
 import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchContract
 import com.zotiko.spacelaunchnow.ui.upcominglaunches.UpComingLaunchesViewModel
+import com.zotiko.spacelaunchnow.ui.upcominglaunches.list.adapter.LaunchEventListAdapter
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -37,6 +42,10 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
 
     private lateinit var fragmentBinding: FragmentMainBinding
 
+    private var eventListItems: ArrayList<LaunchEventDTO> = ArrayList()
+
+    private lateinit var dataListAdapter: RecyclerAdapter<LaunchEventDTO, RecyclerView.ViewHolder>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, vmFactory).get(UpComingLaunchesViewModel::class.java)
@@ -48,28 +57,33 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
         savedInstanceState: Bundle?
     ): View {
         fragmentBinding = FragmentMainBinding.inflate(inflater, container, false)
+        dataListAdapter =
+            LaunchEventListAdapter(
+                eventListItems
+            ) {
+                val action =
+                    LaunchEventListFragmentDirections.actionMainFragmentToDetailFragment(it)
+                findNavController().navigate(action)
+            }
+        setUpRecyclerView()
         return fragmentBinding.root
     }
 
-    private var launchEvents = listOf<LaunchEventDTO>()
+    private fun setUpRecyclerView() {
+        fragmentBinding.launchEventRecyclerView.adapter = dataListAdapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragmentBinding.apply {
             lifecycleOwner = viewLifecycleOwner
             uiViewModel = viewModel
         }
+        (imv_space_background.drawable as AnimationDrawable).startWithFade()
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
             Timber.d("Launch Event : $it")
-            launchEvents = it.activityData
             it?.let { render(it) }
         })
-        fragmentBinding.navigationButton.setOnClickListener {
-            val action =
-                LaunchEventListFragmentDirections.actionMainFragmentToDetailFragment(
-                    launchEvents[0]
-                )
-            findNavController().navigate(action)
-        }
     }
 
     override fun onAttach(context: Context) {
@@ -98,21 +112,13 @@ class LaunchEventListFragment : Fragment(), HasAndroidInjector {
         }
 
         if (viewState.activityData.isNotEmpty()) {
-            apiData.apply {
-                text = viewState.activityData.toString()
-                visibility = View.VISIBLE
-            }
+            eventListItems.addAll(viewState.activityData)
+            dataListAdapter.replaceData(eventListItems)
         }
     }
 
     private fun showError(errorMessage: String) {
-        Snackbar
-            .make(
-                fragmentBinding.root,
-                errorMessage,
-                Snackbar.LENGTH_SHORT
-            )
-            .show()
+        Snackbar.make(fragmentBinding.root, errorMessage, Snackbar.LENGTH_SHORT).show()
     }
 
     interface OnFragmentInteractionListener
